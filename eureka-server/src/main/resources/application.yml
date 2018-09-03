@@ -1,0 +1,13 @@
+server:
+  port: 20080
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://172.16.10.42:${server.port}/eureka/
+
+spring:
+  application:
+    name: eurka-server

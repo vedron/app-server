@@ -1,0 +1,10 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.10.42:20080/eureka/
+server:
+  port: 30080
+
+spring:
+  application:
+    name: app-service

@@ -1,0 +1,43 @@
+server:
+  port: 30080
+
+spring:  
+  profiles:  
+    active: test
+
+---
+spring:
+  profiles: dev
+eureka:
+  instance:
+    hostname: 192.168.10.12
+    servicePort: 20080
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.servicePort}/eureka/
+---
+spring:
+  profiles: test
+
+  redis:
+    database: 0
+    host: 172.16.126.140
+    port: 6379
+    password: BaijuCM123abc
+    pool:
+      max-active: 8
+      max-wait: 1000
+      max-idle: 8
+      
+eureka:
+  instance:
+    hostname: 172.16.126.140
+    servicePort: 20080
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.servicePort}/eureka/
+---
+
+spring:
+  application:
+    name: app-service
