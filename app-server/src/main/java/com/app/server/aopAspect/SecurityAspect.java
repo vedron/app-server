@@ -5,17 +5,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
@@ -25,7 +28,6 @@ import com.app.common.message.Resources;
 import com.app.common.message.StatusCode;
 import com.app.common.redis.RedisKeyPrefix;
 import com.app.common.redis.RedisUtil;
-
 import com.app.common.security.IgnoreSecurity;
 import com.app.common.security.LoginCompatibleSecurity;
 import com.app.entity.Resp;
@@ -33,6 +35,8 @@ import com.app.entity.Resp;
  * Desc: 用于检查 token 的切面
  *
  */
+@Aspect
+@Component
 public class SecurityAspect {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -49,7 +53,8 @@ public class SecurityAspect {
 	public void setTokenName(String tokenName) {
 		this.tokenName = tokenName;
 	}
-
+	
+	@Around("execution(* com.app.server.controller.*.*(..))")
 	public Object execute(ProceedingJoinPoint pjp) throws Throwable {
 
 		// 从切点上获取目标方法

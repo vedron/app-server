@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.common.security.IgnoreSecurity;
 import com.app.entity.dto.LoginDto;
-import com.app.service.ILoginService;
+import com.app.service.LoginService;
 
 
 @RestController
@@ -22,8 +21,7 @@ public class LoginController{
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     
-    @Autowired
-    private ILoginService loginService;
+    private LoginService loginService;
     
 	@IgnoreSecurity
 	@RequestMapping(value = "/checkPassword", method = RequestMethod.POST)

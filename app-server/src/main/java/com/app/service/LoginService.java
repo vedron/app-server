@@ -16,9 +16,7 @@ public class LoginService {
     private final String URL_PREFIX = "http://APP-SERVICE/";
 
     public String checkPassword(LoginDto dto) {
-        JSONObject postData = new JSONObject();
-        postData.put("descp", "request for post");
-        JSONObject json = restTemplate.postForEntity(URL_PREFIX + "checkPassword", postData, JSONObject.class).getBody();
+        JSONObject json = restTemplate.postForEntity(URL_PREFIX + "checkPassword", dto, JSONObject.class).getBody();
         return json.toJSONString();
     }
 
