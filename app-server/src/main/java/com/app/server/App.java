@@ -7,7 +7,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(scanBasePackages=("com.app.common"))
+@SpringBootApplication(scanBasePackages=("com.app"))
 @EnableDiscoveryClient
 public class App 
 {
