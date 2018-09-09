@@ -6,9 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication(scanBasePackages=("com.app.common"))
+@SpringBootApplication(scanBasePackages=("com.app"))
 @EnableEurekaClient
-@RestController
 public class App 
 {
     public static void main( String[] args )
