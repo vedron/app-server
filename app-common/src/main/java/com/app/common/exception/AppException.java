@@ -3,11 +3,10 @@ package com.app.common.exception;
 import com.app.common.message.StatusCode;
 
 public class AppException extends RuntimeException {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8060182813311737888L;
+	private static final long serialVersionUID = 7907292008776031560L;
 	
 	private StatusCode statusCode;
 

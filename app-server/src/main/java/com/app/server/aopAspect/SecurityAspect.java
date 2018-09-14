@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -29,7 +29,6 @@ import com.app.common.message.StatusCode;
 import com.app.common.redis.RedisKeyPrefix;
 import com.app.common.redis.RedisUtil;
 import com.app.common.security.IgnoreSecurity;
-import com.app.common.security.LoginCompatibleSecurity;
 import com.app.entity.Resp;
 /**
  * Desc: 用于检查 token 的切面
@@ -68,19 +67,11 @@ public class SecurityAspect {
 		if (!method.isAnnotationPresent(IgnoreSecurity.class)) {
 			token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getParameter(tokenName);
 
-			if ((null == token || !redisService.exists(RedisKeyPrefix.App_Token + token))
-					&& !method.isAnnotationPresent(LoginCompatibleSecurity.class)) {
-				throw new AppException(StatusCode.UNAUTHORIZED);
-			} else if (method.isAnnotationPresent(LoginCompatibleSecurity.class) && null != token
-					&& !redisService.exists(RedisKeyPrefix.App_Token + token)) {
+			if (null == token || !redisService.exists(RedisKeyPrefix.USER_TOKEN + token)) {
 				throw new AppException(StatusCode.UNAUTHORIZED);
 			} else {
-				if (token != null) {
-					redisService.flushExpireTime(RedisKeyPrefix.App_Token + token,
-							Long.parseLong(redisService.hGet(RedisKeyPrefix.System_Params, "app_token_expire_second")));
-				}
+				redisService.flushExpireTime(RedisKeyPrefix.USER_TOKEN + token, 86400L);
 			}
-
 		}
 
 		BindingResult bindingResult = null;
@@ -102,44 +93,33 @@ public class SecurityAspect {
 			} else if (!(arg instanceof MultipartFile) && !(arg instanceof HttpServletRequest)
 					&& !(arg instanceof HttpServletResponse)) {
 				// 判断参数入参带上用户ID
-				if (!method.isAnnotationPresent(IgnoreSecurity.class)
-						&& ((method.isAnnotationPresent(LoginCompatibleSecurity.class) && token != null)
-								|| !method.isAnnotationPresent(LoginCompatibleSecurity.class))) {
+				if (!method.isAnnotationPresent(IgnoreSecurity.class)) {
 					if (!getUserId(arg, token)) {
 						throw new AppException(StatusCode.UNAUTHORIZED);
 					}
 				}
-
-				if (arg instanceof MultipartFile){
-					logger.info("请求报文：[Name]" + ((MultipartFile)arg).getName()
-							+ ", [OriginalFilename]" + ((MultipartFile)arg).getOriginalFilename()
-							+ ", [Size]" + ((MultipartFile)arg).getSize()
-							+ ", [ContentType]" + ((MultipartFile)arg).getContentType());
-				} else {
-					logger.info("请求报文：" + JSONObject.toJSONString(arg));
-				}
+				
+     			logger.info("请求报文：" + JSONObject.toJSONString(arg));
 			}
 		}
 		// 调用目标方法
 		return pjp.proceed();
 	}
-
-	public void afterReturning(JoinPoint joinPoint, Resp resp) {
+	
+	@AfterReturning(pointcut="execution(* com.app.server.controller.*.*(..))",argNames = "resp",returning = "resp")
+	public void afterReturning(Resp resp) {
 		// 国际化
-		if (resp.getCode() != 200) {
-			try {
-				String msg = Resources.getMessage(resp.getCode() + "");
-
-				if (msg.contains("?") && resp.getDatas() != null) {
-					String newMsg = msg.replace("?", resp.getDatas().toString());
-					resp.setDatas(null);
-					resp.setMsg(newMsg);
-				} else {
-					resp.setMsg(msg);
-				}
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
+		try {
+			String msg = Resources.getMessage(resp.getCode() + "");
+			if (msg.contains("?") && resp.getDatas() != null) { // 支持一个变量
+				String newMsg = msg.replace("?", resp.getDatas().toString());
+				resp.setDatas(null);
+				resp.setMsg(newMsg);
+			} else {
+				resp.setMsg(msg);
 			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 		logger.info(JSONObject.toJSONString(resp));
 	}

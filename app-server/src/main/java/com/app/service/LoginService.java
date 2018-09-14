@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.app.entity.dto.LoginDto;
+import com.app.entity.Resp;
+import com.app.entity.dto.LoginReqDto;
+import com.app.entity.dto.VerifyCodeReqDto;
 
 @Service
 public class LoginService {
@@ -18,11 +20,19 @@ public class LoginService {
     
     private final String URL_PREFIX = "http://APP-SERVICE/";
 
-    public String checkPassword(LoginDto dto) {
+    public Resp getVerifyCode(VerifyCodeReqDto dto) {
     	HttpHeaders headers = new HttpHeaders();
     	headers.setContentType(MediaType.APPLICATION_JSON);
-    	HttpEntity<LoginDto> entity = new HttpEntity<LoginDto>(dto, headers);
-    	ResponseEntity<String> resp = restTemplate.postForEntity(URL_PREFIX + "login/checkPassword", entity, String.class);
+    	HttpEntity<VerifyCodeReqDto> entity = new HttpEntity<VerifyCodeReqDto>(dto, headers);
+    	ResponseEntity<Resp> resp = restTemplate.postForEntity(URL_PREFIX + "login/getVerifyCode", entity, Resp.class);
+        return resp.getBody();
+    }
+    
+    public Resp verifyCode(LoginReqDto dto) {
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.APPLICATION_JSON);
+    	HttpEntity<LoginReqDto> entity = new HttpEntity<LoginReqDto>(dto, headers);
+    	ResponseEntity<Resp> resp = restTemplate.postForEntity(URL_PREFIX + "login/verifyCode", entity, Resp.class);
         return resp.getBody();
     }
 

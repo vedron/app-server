@@ -1,14 +1,11 @@
 package com.app.common.redis;
 
 public class RedisKeyPrefix {
+	public static final String USER_TOKEN = "userToken_";
+	
+	public static final String USER_PHONE_TO_ID = "userPhoneToId";
 
+	public static final String VERIFY_CODE = "verifyCode_";
 
-	/********** 用户 *****************/
-	public static final String App_Token = "appToken_";
-
-	public static final String User_Base_info = "userBaseInfo_";
-
-	/********** 系统参数模板 *****************/
-	public static final String System_Params = "sysParameter";
-
+	public static final String USER_INFO = "userInfo_";
 }

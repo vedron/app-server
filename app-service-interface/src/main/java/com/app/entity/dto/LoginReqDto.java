@@ -7,11 +7,12 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 
-public class LoginDto implements Serializable {
+public class LoginReqDto implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8998323885631150315L;
+	private static final long serialVersionUID = 8781266438287531071L;
 
 	@Pattern(regexp = "^1\\d{10}$", message = "手机号格式错误")
 	private String phone;
@@ -20,22 +21,10 @@ public class LoginDto implements Serializable {
 	private String code;
 
 	@Length(max = 50,message="设备类型错误")
-	private String device;
+	private String deviceType;
 
 	@Length(max = 100,message="设备类型错误")
 	private String deviceId;
-
-	private String LoginIp;
-	
-	private Integer accountType = 1;
-
-	public String getLoginIp() {
-		return LoginIp;
-	}
-
-	public void setLoginIp(String loginIp) {
-		LoginIp = loginIp;
-	}
 
 	public String getPhone() {
 		return phone;
@@ -53,12 +42,12 @@ public class LoginDto implements Serializable {
 		this.code = code;
 	}
 
-	public String getDevice() {
-		return device;
+	public String getDeviceType() {
+		return deviceType;
 	}
 
-	public void setDevice(String device) {
-		this.device = device;
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
 	}
 
 	public String getDeviceId() {
@@ -68,14 +57,4 @@ public class LoginDto implements Serializable {
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
-
-
-	public Integer getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(Integer accountType) {
-		this.accountType = accountType;
-	}
-
 }

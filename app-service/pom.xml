@@ -18,13 +18,18 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.xwj</groupId>
+			<groupId>com.app</groupId>
 			<artifactId>app-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.xwj</groupId>
+			<groupId>com.app</groupId>
 			<artifactId>app-service-interface</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.app</groupId>
+			<artifactId>app-dao</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		

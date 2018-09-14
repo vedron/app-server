@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Resp implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 463307427361109020L;
+	private static final long serialVersionUID = 4374286497646265995L;
 
 	private int code = 200;
 

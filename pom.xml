@@ -7,7 +7,7 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
-	<name>app-server</name>
+	<name>app-server-project</name>
 	<url>http://maven.apache.org</url>
 
 	<parent>
@@ -23,6 +23,7 @@
 		<module>app-service</module>
 		<module>app-common</module>
 		<module>app-service-interface</module>
+		<module>app-dao</module>
 	</modules>
 
 	<properties>
@@ -30,14 +31,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Dalston.SR5</spring-cloud.version>
-		<spring.version>4.3.16.RELEASE</spring.version>
-		<spring-data-redis.version>1.8.6.RELEASE</spring-data-redis.version>
-		<spring-data-commons.version>1.13.13.RELEASE</spring-data-commons.version>
 		<spring-cloud-starter-feign.version>1.4.5.RELEASE</spring-cloud-starter-feign.version>
 		<spring-cloud-starter-netflix-eureka.version>1.4.2.RELEASE</spring-cloud-starter-netflix-eureka.version>
-		
-		<jedis.version>2.9.0</jedis.version>
-		<mybatis.version>3.4.4</mybatis.version>
 		
 		<aliyun-sdk-push.version>3.10.0</aliyun-sdk-push.version>
 		<aliyun-sdk-core.version>3.2.5</aliyun-sdk-core.version>
@@ -47,11 +42,15 @@
 		<alipay-sdk-java.version>3.3.49.ALL</alipay-sdk-java.version>
 
 		<commons-lang3.version>3.6</commons-lang3.version>
+		<commons-text.version>1.1</commons-text.version>
 		<fastjson.version>1.2.35</fastjson.version>
 		
 		<aspectj.version>1.8.10</aspectj.version>
 		
 		<com.fasterxml.jackson.core.version>2.9.5</com.fasterxml.jackson.core.version>
+		
+		<mybatis-spring-boot.version>1.2.0</mybatis-spring-boot.version>
+        <mysql-connector.version>5.1.39</mysql-connector.version>
 	</properties>
 
 	<dependencies>
@@ -74,6 +73,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+		    <!-- Spring begin -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -94,73 +94,6 @@
 				<version>${spring-cloud-starter-netflix-eureka.version}</version>
 			</dependency>
 			
-			<!-- Spring begin -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context-support</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-beans</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-oxm</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-expression</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-feign</artifactId>
@@ -168,36 +101,21 @@
 			</dependency>
 			<!-- Spring end -->
 
-			<!-- Jedis begin 废弃
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-redis</artifactId>
-				<version>${spring-data-redis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>redis.clients</groupId>
-				<artifactId>jedis</artifactId>
-				<version>${jedis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-commons</artifactId>
-				<version>${spring-data-commons.version}</version>
-			</dependency>
-			Jedis end -->
-
-			<!-- MyBatis begin -->
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis-spring</artifactId>
-				<version>${mybatis.spring.version}</version>
-			</dependency>
-			<!-- MyBatis end -->
+            <!-- Mybatis begin -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
+            </dependency>
+            <!-- Mybatis end -->
+            
+            <!-- MySQL begin -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+            <!-- MySQL end -->
 
 			<!-- ali begin -->
 			<dependency>
@@ -225,13 +143,11 @@
 				<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
 				<version>${aliyun-sdk-dysmsapi.version}</version>
 			</dependency>
-			
 			<dependency>
 				<groupId>com.alipay.sdk</groupId>
 				<artifactId>alipay-sdk-java</artifactId>
 				<version>${alipay-sdk-java.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>
@@ -245,7 +161,12 @@
 				<version>${commons-lang3.version}</version>
 			</dependency>
 			
-			
+	        <dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-text</artifactId>
+				<version>${commons-text.version}</version>
+		    </dependency>
+		
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
