@@ -72,10 +72,12 @@ public class LoginController implements ILoginService {
     	if (strUserId == null || "".equals(strUserId) ) {
     		Long userId = null;
     		if (userMapper.createUser(userId, dto.getPhone(), dto.getDeviceType(), dto.getDeviceId()) > 0) {
-    			redisService.put(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone(), String.valueOf(userId));
+    			strUserId = String.valueOf(userId);
+    			redisService.put(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone(), strUserId);
     		}
     	}
 
+    	redisService.set(RedisKeyPrefix.USER_TOKEN + rspBody.getToken(), strUserId, 259200L);
         return new Resp(rspBody);
     }
 }
