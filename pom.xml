@@ -23,7 +23,6 @@
 		<module>app-service</module>
 		<module>app-common</module>
 		<module>app-service-interface</module>
-		<module>app-dao</module>
 	</modules>
 
 	<properties>
@@ -50,7 +49,7 @@
 		<com.fasterxml.jackson.core.version>2.9.5</com.fasterxml.jackson.core.version>
 		
 		<mybatis-spring-boot.version>1.2.0</mybatis-spring-boot.version>
-        <mysql-connector.version>5.1.39</mysql-connector.version>
+        <mysql-connector.version>5.1.45</mysql-connector.version>
 	</properties>
 
 	<dependencies>

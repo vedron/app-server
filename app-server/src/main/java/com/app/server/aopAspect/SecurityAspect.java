@@ -109,19 +109,22 @@ public class SecurityAspect {
 	@AfterReturning(pointcut="execution(* com.app.server.controller.*.*(..))",argNames = "resp",returning = "resp")
 	public void afterReturning(Resp resp) {
 		// 国际化
-		try {
-			String msg = Resources.getMessage(resp.getCode() + "");
-			if (msg.contains("?") && resp.getDatas() != null) { // 支持一个变量
-				String newMsg = msg.replace("?", resp.getDatas().toString());
-				resp.setDatas(null);
-				resp.setMsg(newMsg);
-			} else {
-				resp.setMsg(msg);
+		if (resp.getCode() != 200) {
+			try {
+				String msg = Resources.getMessage(resp.getCode() + "");
+				if (msg.contains("?") && resp.getDatas() != null) { // 支持一个变量
+					String newMsg = msg.replace("?", resp.getDatas().toString());
+					resp.setDatas(null);
+					resp.setMsg(newMsg);
+				} else {
+					resp.setMsg(msg);
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
 		}
-		logger.info(JSONObject.toJSONString(resp));
+
+		logger.info("响应报文：" + JSONObject.toJSONString(resp));
 	}
 
 	private boolean getUserId(Object arg, String token) {

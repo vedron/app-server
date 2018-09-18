@@ -2,10 +2,10 @@ package com.app.service.controller;
 
 import javax.validation.Valid;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,15 +38,14 @@ public class LoginController implements ILoginService {
     private UserMapper userMapper;
 
 	@Override
-	@Transactional
 	@RequestMapping(value = "/getVerifyCode", method = RequestMethod.POST)
-	public Resp getVerifyCode(VerifyCodeReqDto dto) {
+	public Resp getVerifyCode(@RequestBody @Valid VerifyCodeReqDto dto) {
     	log.info("getVerifyCode phone: " + dto.getPhone());
     	if (dto.getPhone() == null || "".equals(dto.getPhone())) {
-    		return new Resp(StatusCode.BAD_REQUEST);
+    		return new Resp(StatusCode.BAD_REQUEST.value());
     	}
     	if (redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
-    		return new Resp(StatusCode.VERIFY_CODE_BUSY);
+    		return new Resp(StatusCode.VERIFY_CODE_BUSY.value());
     	}
     	
     	VerifyCodeRspDto rspBody = new VerifyCodeRspDto();
@@ -57,13 +56,12 @@ public class LoginController implements ILoginService {
 	}
 
 	@Override
-	@Transactional
 	@RequestMapping(value = "/verifyCode", method = RequestMethod.POST)
 	public Resp verifyCode(@RequestBody @Valid LoginReqDto dto) {
     	log.info("verifyCode phone: " + dto.getPhone());
     	
-    	if (! redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone(), dto.getCode())) {
-    		return new Resp(StatusCode.UNAUTHORIZED);
+    	if (! redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
+    		return new Resp(StatusCode.UNAUTHORIZED.value());
     	}
 
     	LoginRspDto rspBody = new LoginRspDto();

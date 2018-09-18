@@ -1,7 +1,5 @@
 package com.app.common.message;
 
-import com.app.common.message.Resources;
-
 public enum StatusCode {
 	/** 200请求成功 */
 	OK(200),
@@ -15,24 +13,17 @@ public enum StatusCode {
 	INTERNAL_SERVER_ERROR(500)
 	;
 	
-	private final Integer value;
+	private final int value;
 
-	StatusCode(Integer value) {
+	StatusCode(int value) {
 		this.value = value;
 	}
 
-	/**
-	 * Return the integer value of this status code.
-	 */
-	public Integer value() {
+	public int value() {
 		return this.value;
 	}
 
-	public String msg() {
-		return Resources.getMessage("" + this.value);
-	}
-
 	public String toString() {
-		return this.value.toString();
+		return String.valueOf(this.value);
 	}
 }

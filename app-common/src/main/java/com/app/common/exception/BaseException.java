@@ -1,5 +1,6 @@
 package com.app.common.exception;
 
+import com.app.common.message.Resources;
 import com.app.common.message.StatusCode;
 import com.app.common.model.Meta;
 import com.app.common.utils.StringUtils;
@@ -37,7 +38,7 @@ public abstract class BaseException  extends RuntimeException{
 		if (StringUtils.isNotBlank(getMessage())) {
 			meta.setMsg(getMessage()); // 取系统的错误消息
 		}else {
-			meta.setMsg(getStatusCode().msg());
+			meta.setMsg(Resources.getMessage(getStatusCode().value() + ""));
 		}
 	}
 
