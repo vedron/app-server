@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserMapper {
-    void createUser(@Param("userId")Long userId,
+    int createUser(@Param("userId")Long userId,
     		@Param("userMobilephone")String userMobilephone,
     		@Param("userDeviceType")String userDeviceType,
     		@Param("userDeviceId")String userDeviceId);

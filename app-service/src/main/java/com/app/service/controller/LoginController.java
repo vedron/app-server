@@ -71,7 +71,9 @@ public class LoginController implements ILoginService {
     	String strUserId = redisService.hGet(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone());
     	if (strUserId == null || "".equals(strUserId) ) {
     		Long userId = null;
-    		userMapper.createUser(userId, dto.getPhone(), dto.getDeviceType(), dto.getDeviceId());
+    		if (userMapper.createUser(userId, dto.getPhone(), dto.getDeviceType(), dto.getDeviceId()) > 0) {
+    			redisService.put(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone(), String.valueOf(userId));
+    		}
     	}
 
         return new Resp(rspBody);
