@@ -63,6 +63,11 @@ public class LoginController implements ILoginService {
     	if (! redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
     		return new Resp(StatusCode.UNAUTHORIZED.value());
     	}
+    	
+    	if (! dto.getCode().equals(redisService.get(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) ){
+    		return new Resp(StatusCode.UNAUTHORIZED.value());
+    	}
+    	redisService.remove(redisService.get(RedisKeyPrefix.VERIFY_CODE + dto.getPhone()));
 
     	LoginRspDto rspBody = new LoginRspDto();
     	rspBody.setToken(CodecUtil.createToken());
