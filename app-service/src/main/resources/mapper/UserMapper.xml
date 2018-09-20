@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.app.dao.UserMapper" >
-  <insert id="createUser" keyProperty="userId" useGeneratedKeys="true">
+  <insert id="createUser" keyProperty="userId" useGeneratedKeys="true" parameterType="com.app.entity.dto.UserInfoDto">
     insert into user_tbl(user_id, user_mobilephone, user_status, user_create_date, 
       user_update_date, user_device_type, user_device_id)
     values (#{userId,jdbcType=BIGINT}, #{userMobilephone,jdbcType=VARCHAR}, 1, now(),
       now(), #{userDeviceType,jdbcType=VARCHAR}, #{userDeviceId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateUser" >
+    update user_tbl
+    set user_mobilephone=#{userMobilephone,jdbcType=VARCHAR}, 
+      user_device_type=#{userDeviceType,jdbcType=VARCHAR},
+      user_device_id=#{userDeviceId,jdbcType=VARCHAR},
+      user_update_date=now()
+    where user_id=#{userId,jdbcType=BIGINT}
   </insert>
 </mapper>

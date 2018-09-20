@@ -1,8 +1,10 @@
 package com.app.service.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.app.dao.UserMapper;
 import com.app.entity.Resp;
 import com.app.entity.dto.LoginReqDto;
 import com.app.entity.dto.LoginRspDto;
+import com.app.entity.dto.UserInfoDto;
 import com.app.entity.dto.VerifyCodeReqDto;
 import com.app.entity.dto.VerifyCodeRspDto;
 import com.app.service.ILoginService;
@@ -61,13 +64,13 @@ public class LoginController implements ILoginService {
     	log.info("verifyCode phone: " + dto.getPhone());
     	
     	if (! redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
-    		return new Resp(StatusCode.UNAUTHORIZED.value());
+    		return new Resp(StatusCode.LOGIN_FAIL.value());
     	}
     	
     	if (! dto.getCode().equals(redisService.get(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) ){
-    		return new Resp(StatusCode.UNAUTHORIZED.value());
+    		return new Resp(StatusCode.LOGIN_FAIL.value());
     	}
-    	redisService.remove(redisService.get(RedisKeyPrefix.VERIFY_CODE + dto.getPhone()));
+    	redisService.remove(RedisKeyPrefix.VERIFY_CODE + dto.getPhone());
 
     	LoginRspDto rspBody = new LoginRspDto();
     	rspBody.setToken(CodecUtil.createToken());
@@ -75,13 +78,25 @@ public class LoginController implements ILoginService {
     	// 用户不存在，则新增
     	String strUserId = redisService.hGet(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone());
     	if (strUserId == null || "".equals(strUserId) ) {
-    		Long userId = null;
-    		if (userMapper.createUser(userId, dto.getPhone(), dto.getDeviceType(), dto.getDeviceId()) > 0) {
-    			strUserId = String.valueOf(userId);
+    		UserInfoDto user = new UserInfoDto();
+    		user.setUserMobilephone(dto.getPhone());
+    		user.setUserDeviceType(dto.getDeviceType());
+    		user.setUserDeviceId(dto.getDeviceId());
+    		if (userMapper.createUser(user) > 0) {
+    			strUserId = String.valueOf(user.getUserId());
     			redisService.put(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone(), strUserId);
     		}
+    	} else {
+    		userMapper.updateUser(Long.valueOf(strUserId), dto.getPhone(), dto.getDeviceType(), dto.getDeviceId());
     	}
 
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", strUserId);
+		map.put("userMobilephone", dto.getPhone());
+		map.put("userDeviceType", dto.getDeviceType());
+		map.put("userDeviceId", dto.getDeviceId());
+		map.put("token", rspBody.getToken());
+		redisService.hSet(RedisKeyPrefix.USER_INFO + strUserId, map, null);
     	redisService.set(RedisKeyPrefix.USER_TOKEN + rspBody.getToken(), strUserId, 259200L);
         return new Resp(rspBody);
     }
