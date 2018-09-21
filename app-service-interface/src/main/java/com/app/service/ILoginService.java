@@ -12,7 +12,7 @@ public interface ILoginService {
 	@GetMapping("/getVerifyCode")
 	public Resp getVerifyCode(VerifyCodeReqDto dto);
 	
-	@GetMapping("/verifyCode")
-	public Resp verifyCode(LoginReqDto dto);
+	@GetMapping("/loginByVerifyCode")
+	public Resp loginByVerifyCode(LoginReqDto dto);
 	
 }

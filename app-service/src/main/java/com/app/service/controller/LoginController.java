@@ -47,30 +47,30 @@ public class LoginController implements ILoginService {
     	if (dto.getPhone() == null || "".equals(dto.getPhone())) {
     		return new Resp(StatusCode.BAD_REQUEST.value());
     	}
-    	if (redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
+    	
+    	String strCode = redisService.hGet(RedisKeyPrefix.VERIFY_CODE, dto.getPhone());
+    	if (strCode != null && !"".equals(strCode)) {
     		return new Resp(StatusCode.VERIFY_CODE_BUSY.value());
     	}
     	
     	VerifyCodeRspDto rspBody = new VerifyCodeRspDto();
     	rspBody.setVerifyCode(StringUtils.createRandomVcode());
 
-    	redisService.set(RedisKeyPrefix.VERIFY_CODE + dto.getPhone(), rspBody.getVerifyCode(), 300L);
+    	redisService.put(RedisKeyPrefix.VERIFY_CODE, dto.getPhone(), rspBody.getVerifyCode(), 300L);
 		return new Resp(rspBody);
 	}
 
 	@Override
-	@RequestMapping(value = "/verifyCode", method = RequestMethod.POST)
-	public Resp verifyCode(@RequestBody @Valid LoginReqDto dto) {
-    	log.info("verifyCode phone: " + dto.getPhone());
-    	
-    	if (! redisService.exists(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) {
+	@RequestMapping(value = "/loginByVerifyCode", method = RequestMethod.POST)
+	public Resp loginByVerifyCode(@RequestBody @Valid LoginReqDto dto) {
+    	log.info("loginByVerifyCode phone: " + dto.getPhone());
+
+    	String strCode = redisService.hGet(RedisKeyPrefix.VERIFY_CODE, dto.getPhone());
+    	if (strCode == null && !dto.getCode().equals(strCode)) {
     		return new Resp(StatusCode.LOGIN_FAIL.value());
     	}
     	
-    	if (! dto.getCode().equals(redisService.get(RedisKeyPrefix.VERIFY_CODE + dto.getPhone())) ){
-    		return new Resp(StatusCode.LOGIN_FAIL.value());
-    	}
-    	redisService.remove(RedisKeyPrefix.VERIFY_CODE + dto.getPhone());
+    	redisService.hDel(RedisKeyPrefix.VERIFY_CODE, dto.getPhone());
 
     	LoginRspDto rspBody = new LoginRspDto();
     	rspBody.setToken(CodecUtil.createToken());
@@ -87,17 +87,18 @@ public class LoginController implements ILoginService {
     			redisService.put(RedisKeyPrefix.USER_PHONE_TO_ID, dto.getPhone(), strUserId);
     		}
     	} else {
-    		userMapper.updateUser(Long.valueOf(strUserId), dto.getPhone(), dto.getDeviceType(), dto.getDeviceId());
+    		String oldToken = redisService.hGet(RedisKeyPrefix.USER_INFO_ + strUserId, "token");
+    		redisService.hDel(RedisKeyPrefix.USER_TOKEN, oldToken);
+    		userMapper.updateUser(Long.valueOf(strUserId), dto.getDeviceType(), dto.getDeviceId());
     	}
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", strUserId);
 		map.put("userMobilephone", dto.getPhone());
 		map.put("userDeviceType", dto.getDeviceType());
 		map.put("userDeviceId", dto.getDeviceId());
 		map.put("token", rspBody.getToken());
-		redisService.hSet(RedisKeyPrefix.USER_INFO + strUserId, map, null);
-    	redisService.set(RedisKeyPrefix.USER_TOKEN + rspBody.getToken(), strUserId, 259200L);
+		redisService.hSet(RedisKeyPrefix.USER_INFO_ + strUserId, map, null);
+    	redisService.put(RedisKeyPrefix.USER_TOKEN, rspBody.getToken(), strUserId, 259200L);
         return new Resp(rspBody);
     }
 }

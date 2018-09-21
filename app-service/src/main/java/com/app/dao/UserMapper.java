@@ -11,7 +11,6 @@ public interface UserMapper {
     
 
     int updateUser(@Param("userId")Long userId,
-    		@Param("userMobilephone")String userMobilephone,
     		@Param("userDeviceType")String userDeviceType,
     		@Param("userDeviceId")String userDeviceId);
 }

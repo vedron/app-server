@@ -10,8 +10,7 @@
   
   <update id="updateUser" >
     update user_tbl
-    set user_mobilephone=#{userMobilephone,jdbcType=VARCHAR}, 
-      user_device_type=#{userDeviceType,jdbcType=VARCHAR},
+    set user_device_type=#{userDeviceType,jdbcType=VARCHAR},
       user_device_id=#{userDeviceId,jdbcType=VARCHAR},
       user_update_date=now()
     where user_id=#{userId,jdbcType=BIGINT}

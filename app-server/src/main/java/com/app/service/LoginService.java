@@ -28,11 +28,11 @@ public class LoginService {
         return resp.getBody();
     }
     
-    public Resp verifyCode(LoginReqDto dto) {
+    public Resp loginByVerifyCode(LoginReqDto dto) {
     	HttpHeaders headers = new HttpHeaders();
     	headers.setContentType(MediaType.APPLICATION_JSON);
     	HttpEntity<LoginReqDto> entity = new HttpEntity<LoginReqDto>(dto, headers);
-    	ResponseEntity<Resp> resp = restTemplate.postForEntity(URL_PREFIX + "login/verifyCode", entity, Resp.class);
+    	ResponseEntity<Resp> resp = restTemplate.postForEntity(URL_PREFIX + "login/loginByVerifyCode", entity, Resp.class);
         return resp.getBody();
     }
 

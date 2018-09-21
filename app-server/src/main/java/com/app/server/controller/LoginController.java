@@ -29,8 +29,8 @@ public class LoginController{
     }
 	
 	@IgnoreSecurity
-	@RequestMapping(value = "/verifyCode", method = RequestMethod.POST)
-	public Resp verifyCode(@RequestBody @Valid LoginReqDto dto, BindingResult error) {
-        return loginService.verifyCode(dto);
+	@RequestMapping(value = "/loginByVerifyCode", method = RequestMethod.POST)
+	public Resp loginByVerifyCode(@RequestBody @Valid LoginReqDto dto, BindingResult error) {
+        return loginService.loginByVerifyCode(dto);
     }
 }
