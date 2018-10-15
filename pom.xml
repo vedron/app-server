@@ -23,6 +23,7 @@
 		<module>app-service</module>
 		<module>app-common</module>
 		<module>app-service-interface</module>
+		<module>config-service</module>
 	</modules>
 
 	<properties>
