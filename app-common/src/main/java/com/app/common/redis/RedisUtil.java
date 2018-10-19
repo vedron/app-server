@@ -193,23 +193,23 @@ public class RedisUtil {
 
 	public Long geoPut(String key, Map<String, Point> location) {
 		BoundGeoOperations<String, String> geoOps = redisTemplate.boundGeoOps(key);
-		return geoOps.geoAdd(location);
+		return geoOps.add(location);
 	}
 
 	public Long geoCover(String key, Map<String, Point> location, String id) {
 		BoundGeoOperations<String, String> geoOps = redisTemplate.boundGeoOps(key);
-		geoOps.geoRemove(id);
-		return geoOps.geoAdd(location);
+		geoOps.remove(id);
+		return geoOps.add(location);
 	}
 
 	public Long geoRemove(String key, String member) {
 		BoundGeoOperations<String, String> geoOps = redisTemplate.boundGeoOps(key);
-		return geoOps.geoRemove(member);
+		return geoOps.remove(member);
 	}
 
 	public GeoResults<GeoLocation<String>> geoList(String key, Circle within, GeoRadiusCommandArgs args) {
 		BoundGeoOperations<String, String> geoOps = redisTemplate.boundGeoOps(key);
-		return geoOps.geoRadius(within, args);
+		return geoOps.radius(within, args);
 
 	}
 

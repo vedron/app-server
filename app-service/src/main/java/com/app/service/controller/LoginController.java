@@ -25,12 +25,11 @@ import com.app.entity.dto.LoginRspDto;
 import com.app.entity.dto.UserInfoDto;
 import com.app.entity.dto.VerifyCodeReqDto;
 import com.app.entity.dto.VerifyCodeRspDto;
-import com.app.service.ILoginService;
 
 
 @RestController
 @RequestMapping("/login")
-public class LoginController implements ILoginService {
+public class LoginController{
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +39,6 @@ public class LoginController implements ILoginService {
 	@Autowired
     private UserMapper userMapper;
 
-	@Override
 	@RequestMapping(value = "/getVerifyCode", method = RequestMethod.POST)
 	public Resp getVerifyCode(@RequestBody @Valid VerifyCodeReqDto dto) {
     	log.info("getVerifyCode phone: " + dto.getPhone());
@@ -60,7 +58,6 @@ public class LoginController implements ILoginService {
 		return new Resp(rspBody);
 	}
 
-	@Override
 	@RequestMapping(value = "/loginByVerifyCode", method = RequestMethod.POST)
 	public Resp loginByVerifyCode(@RequestBody @Valid LoginReqDto dto) {
     	log.info("loginByVerifyCode phone: " + dto.getPhone());
