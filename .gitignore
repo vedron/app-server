@@ -284,3 +284,14 @@ config-service/target/maven-status/maven-compiler-plugin/testCompile/default-tes
 config-service/target/classes/META-INF/MANIFEST.MF
 config-service/target/classes/META-INF/maven/com.app/config-service/pom.properties
 config-service/target/classes/META-INF/maven/com.app/config-service/pom.xml
+app-zuul-gateway/target/app-server-1.0.0.jar.original
+app-zuul-gateway/target/app-zuul-gateway-1.0.0.jar.original
+app-zuul-gateway/target/classes/application.yml
+app-zuul-gateway/target/classes/logback.xml
+app-zuul-gateway/target/classes/META-INF/MANIFEST.MF
+app-zuul-gateway/target/classes/META-INF/maven/com.app/app-zuul-gateway/pom.properties
+app-zuul-gateway/target/classes/META-INF/maven/com.app/app-zuul-gateway/pom.xml
+app-zuul-gateway/target/maven-archiver/pom.properties
+app-zuul-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+app-zuul-gateway/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+app-zuul-gateway/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
