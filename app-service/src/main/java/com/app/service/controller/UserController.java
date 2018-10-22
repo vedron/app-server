@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.common.redis.RedisKeyPrefix;
 import com.app.common.redis.RedisUtil;
 import com.app.dao.UserMapper;
 import com.app.entity.Resp;
+import com.app.entity.dto.UserInfoDto;
 
 
 @RestController
@@ -28,6 +30,10 @@ public class UserController{
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	public Resp getUserInfo(@RequestHeader(value="userId") String userId) {
     	log.info("getUserInfo: " + userId);
+    	UserInfoDto user = new UserInfoDto();
+    	user.setUserDeviceId(redisService.hGet(RedisKeyPrefix.USER_INFO_ + userId, "userDeviceId"));
+    	user.setUserMobilephone(redisService.hGet(RedisKeyPrefix.USER_INFO_ + userId, "userMobilephone"));
+    	user.setUserDeviceType(redisService.hGet(RedisKeyPrefix.USER_INFO_ + userId, "userDeviceType"));
     	
 		return new Resp();
 	}
