@@ -35,6 +35,6 @@ public class UserController{
     	user.setUserMobilephone(redisService.hGet(RedisKeyPrefix.USER_INFO_ + userId, "userMobilephone"));
     	user.setUserDeviceType(redisService.hGet(RedisKeyPrefix.USER_INFO_ + userId, "userDeviceType"));
     	
-		return new Resp();
+		return new Resp(user);
 	}
 }
