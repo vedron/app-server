@@ -1,6 +1,5 @@
 server:
   port: 9090
-  context-path: /
 
 eureka:
   instance:
@@ -18,7 +17,7 @@ zuul:
   routes:
     api-login:
       path: /login/**
-      service-id: app-service
+      serviceId: app-service
     api-user:
       path: /user/**
-      service-id: app-service
+      serviceId: app-service
