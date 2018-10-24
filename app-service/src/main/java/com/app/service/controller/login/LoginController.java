@@ -1,4 +1,4 @@
-package com.app.service.controller;
+package com.app.service.controller.login;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +26,12 @@ import com.app.entity.dto.UserInfoDto;
 import com.app.entity.dto.VerifyCodeReqDto;
 import com.app.entity.dto.VerifyCodeRspDto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
+@Api(tags = "登录模块") 
 @RequestMapping("/login")
 public class LoginController{
 
@@ -38,7 +42,8 @@ public class LoginController{
 	
 	@Autowired
     private UserMapper userMapper;
-
+	
+	@ApiOperation(value="获取验证码",notes="根据手机号码获取验证码，用于登录")
 	@RequestMapping(value = "/getVerifyCode", method = RequestMethod.POST)
 	public Resp getVerifyCode(@RequestBody @Valid VerifyCodeReqDto dto) {
     	log.info("getVerifyCode phone: " + dto.getPhone());
@@ -58,6 +63,7 @@ public class LoginController{
 		return new Resp(rspBody);
 	}
 
+	@ApiOperation(value="使用验证码登录",notes="用户登录")
 	@RequestMapping(value = "/loginByVerifyCode", method = RequestMethod.POST)
 	public Resp loginByVerifyCode(@RequestBody @Valid LoginReqDto dto) {
     	log.info("loginByVerifyCode phone: " + dto.getPhone());

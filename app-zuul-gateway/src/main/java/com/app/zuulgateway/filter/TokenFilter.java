@@ -51,6 +51,10 @@ public class TokenFilter extends ZuulFilter {
         	if (uri.contains("login/getVerifyCode") || uri.contains("login/loginByVerifyCode")){
                 return ctx;
             }
+        	
+        	if (uri.contains("/v2/api-docs")) {
+        		return ctx;
+        	}
 
         	logger.warn("token is empty");
             ctx.setSendZuulResponse(false);
