@@ -2,10 +2,6 @@ package com.app.entity.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
-
 
 public class LoginRspDto implements Serializable {
 

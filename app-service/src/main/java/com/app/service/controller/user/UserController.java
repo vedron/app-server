@@ -14,7 +14,6 @@ import com.app.common.redis.RedisUtil;
 import com.app.dao.UserMapper;
 import com.app.entity.Resp;
 import com.app.entity.dto.UserInfoDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

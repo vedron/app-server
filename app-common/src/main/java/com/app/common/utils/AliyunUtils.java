@@ -26,8 +26,6 @@ import com.aliyuncs.push.model.v20160801.PushNoticeToiOSRequest;
 import com.aliyuncs.push.model.v20160801.PushNoticeToiOSResponse;
 import com.aliyuncs.push.model.v20160801.PushRequest;
 import com.aliyuncs.push.model.v20160801.PushResponse;
-import com.aliyuncs.push.model.v20160801.QueryDeviceInfoRequest;
-import com.aliyuncs.push.model.v20160801.QueryDeviceInfoResponse;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleRequest;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
 
